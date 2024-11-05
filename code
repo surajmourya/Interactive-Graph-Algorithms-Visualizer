@@ -1,0 +1,129 @@
+pip install networkx matplotlib
+
+
+import networkx as nx
+import matplotlib.pyplot as plt
+
+class GraphVisualizer:
+    def __init__(self):
+        # Initialize an empty graph
+        self.graph = nx.Graph()
+        
+    def add_node(self, node):
+        """Add a node to the graph."""
+        self.graph.add_node(node)
+        print(f"Node {node} added.")
+        
+    def add_edge(self, node1, node2, weight=1):
+        """Add an edge between two nodes with an optional weight."""
+        self.graph.add_edge(node1, node2, weight=weight)
+        print(f"Edge added between {node1} and {node2} with weight {weight}.")
+        
+    def display_graph(self):
+        """Visualize the graph using matplotlib."""
+        plt.figure(figsize=(8, 6))
+        pos = nx.spring_layout(self.graph)
+        nx.draw(self.graph, pos, with_labels=True, node_size=700, node_color='skyblue', font_size=15, font_weight='bold', edge_color='grey')
+        edge_labels = nx.get_edge_attributes(self.graph, 'weight')
+        nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=edge_labels)
+        plt.show()
+        
+    def bfs(self, start_node):
+        """Perform BFS traversal from a start node."""
+        visited = set()
+        queue = [start_node]
+        traversal = []
+        
+        while queue:
+            node = queue.pop(0)
+            if node not in visited:
+                visited.add(node)
+                traversal.append(node)
+                queue.extend(n for n in self.graph.neighbors(node) if n not in visited)
+        
+        print("BFS Traversal:", traversal)
+        return traversal
+    
+    def dfs(self, start_node):
+        """Perform DFS traversal from a start node."""
+        visited = set()
+        stack = [start_node]
+        traversal = []
+        
+        while stack:
+            node = stack.pop()
+            if node not in visited:
+                visited.add(node)
+                traversal.append(node)
+                stack.extend(n for n in self.graph.neighbors(node) if n not in visited)
+        
+        print("DFS Traversal:", traversal)
+        return traversal
+
+    def dijkstra(self, start_node):
+        """Calculate shortest paths from start_node using Dijkstra's algorithm."""
+        distances = {node: float('inf') for node in self.graph.nodes}
+        distances[start_node] = 0
+        visited = set()
+        
+        while len(visited) < len(self.graph.nodes):
+            # Get the unvisited node with the smallest distance
+            min_node = None
+            for node in distances:
+                if node not in visited:
+                    if min_node is None or distances[node] < distances[min_node]:
+                        min_node = node
+            
+            if min_node is None:
+                break
+
+            # Update distances for neighbors of the min_node
+            for neighbor in self.graph.neighbors(min_node):
+                if neighbor not in visited:
+                    new_distance = distances[min_node] + self.graph[min_node][neighbor].get('weight', 1)
+                    if new_distance < distances[neighbor]:
+                        distances[neighbor] = new_distance
+            
+            visited.add(min_node)
+        
+        print("Shortest distances from node:", start_node)
+        for node, distance in distances.items():
+            print(f"Distance to {node}: {distance}")
+        return distances
+
+# Main function for user input
+def main():
+    gv = GraphVisualizer()
+
+    # Input nodes
+    num_nodes = int(input("Enter the number of nodes: "))
+    for _ in range(num_nodes):
+        node = input("Enter node name: ")
+        gv.add_node(node)
+
+    # Input edges
+    num_edges = int(input("Enter the number of edges: "))
+    for _ in range(num_edges):
+        node1 = input("Enter the first node of the edge: ")
+        node2 = input("Enter the second node of the edge: ")
+        weight = int(input("Enter the weight of the edge: "))
+        gv.add_edge(node1, node2, weight)
+
+    # Display the graph
+    gv.display_graph()
+
+    # Ask user for algorithm choice
+    choice = input("Which algorithm would you like to visualize? (BFS, DFS, Dijkstra): ").strip().lower()
+    start_node = input("Enter the start node for the traversal/algorithm: ")
+
+    if choice == 'bfs':
+        gv.bfs(start_node)
+    elif choice == 'dfs':
+        gv.dfs(start_node)
+    elif choice == 'dijkstra':
+        gv.dijkstra(start_node)
+    else:
+        print("Invalid choice. Please select BFS, DFS, or Dijkstra.")
+
+if __name__ == "__main__":
+    main()
