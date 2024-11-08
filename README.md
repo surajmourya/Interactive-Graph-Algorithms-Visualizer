@@ -34,3 +34,8 @@ The **Interactive Graph Algorithms Visualizer** distinguishes itself by offering
 With advancements in AI and adaptive learning technologies, the project can evolve to provide personalized insights, recommend practice algorithms based on user performance, and introduce features like real-time feedback, challenges, and an expanded library of algorithms. This adaptability would not only improve engagement but also make the visualizer a valuable, long-term resource for individuals pursuing careers in technology.
 
 In sum, the **Interactive Graph Algorithms Visualizer** promises to be a robust and scalable solution that serves a growing need for effective, interactive learning in DSA, reinforcing technical skills that are foundational to various industries.
+
+## Additional Documentation
+
+- [Project Overview and State of the Art](https://github.com/surajmourya/Interactive-Graph-Algorithms-Visualizer/wiki/State-of-the-Art:-Interactive-Graph-Algorithms-Visualizer)
+
